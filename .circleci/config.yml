@@ -26,13 +26,13 @@ jobs:
 workflows:
   direct:
     when:
-      - matches: { pattern: "^(?!pull/).*$", value: "pipeline.git.branch" }
+      matches: { pattern: "^(?!pull/).*$", value: "<< pipeline.git.branch >>" }
     jobs:
       - experiment
 
   with_approval:
     when:
-      - matches: { pattern: "^pull/.*$", value: "pipeline.git.branch" }
+      matches: { pattern: "^pull/.*$", value: "<< pipeline.git.branch >>" }
     jobs:
       - experiment:
           requires: [hold]
