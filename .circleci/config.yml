@@ -24,11 +24,15 @@ jobs:
             echo pipeline.trigger_source: << pipeline.trigger_source >>
 
 workflows:
-  test:
+  direct:
+    when:
+      - matches: { pattern: "^(?!pull/).*$", value: "pipeline.git.branch" }
     jobs:
       - experiment
 
   with_approval:
+    when:
+      - matches: { pattern: "^pull/.*$", value: "pipeline.git.branch" }
     jobs:
       - experiment:
           requires: [hold]
