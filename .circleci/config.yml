@@ -1,0 +1,35 @@
+version: 2.1
+
+jobs:
+  experiment:
+    steps:
+      - run:
+          name: Show environment variables
+          command: env
+      - run: 
+          name: Show pipeline metadata
+          command: |
+            echo pipeline.id: << pipeline.id >>
+            echo pipeline.number: << pipeline.number >>
+            echo pipeline.project.git_url: << pipeline.project.git_url >>
+            echo pipeline.project.type: << pipeline.project.type >>
+            echo pipeline.git.tag: << pipeline.git.tag >>
+            echo pipeline.git.branch: << pipeline.git.branch >>
+            echo pipeline.git.branch.is_default: << pipeline.git.branch.is_default >>
+            echo pipeline.git.revision: << pipeline.git.revision >>
+            echo pipeline.git.base_revision: << pipeline.git.base_revision >>
+            echo pipeline.trigger_source: << pipeline.trigger_source >>
+
+workflows:
+  test:
+    jobs:
+      - experiment
+
+  with_approval:
+    jobs:
+      - experiment:
+          requires: [hold]
+
+      - hold:
+          type: approval
+          
